@@ -86,17 +86,17 @@ public class Transactions {
             case "deposit":
                 //Check whether files exists storing account information
                 if (Files.exists(path))
-                    findUpdate();
+                    findAccountUpdate();
                 else System.out.println(notFound);
                 break;
             case "billpayment":
                 if (Files.exists(path))
-                    payBill();
+                    billPayment();
                 else System.out.println(notFound);
                 break;
             case "transfer":
                 if (Files.exists(path))
-                    transferAmount();
+                    transferToAccount();
                 else System.out.println(notFound);
                 break;
             case "accountInfo":
@@ -107,70 +107,6 @@ public class Transactions {
             default:
             System.out.println("You provided an invalid option. Please choose a correct one.");
         }
-
-        /*
-        if (transactionType.equalsIgnoreCase("Opening")) {
-            try {
-                BufferedWriter writer = new BufferedWriter(new FileWriter("AccountDetails.txt", true));
-                int userId = (findMaxId() + 1);
-                writer.write(Integer.toString(userId) + "\n");
-                writer.write(amount + "\n");
-                writer.write(date + "\n");
-                writer.write(accountName + "\n");
-                writer.close();
-
-                //Account opened
-                System.out.println("==== Congratulations! Account has been successfully opened ====");
-                System.out.println("\t\tUser Name: " + accountName);
-                System.out.println("\t\tAccount Number: " + userId);
-                System.out.println("\t\tOpening Balance: " + amount + "\n");
-            } catch (IOException e) {
-                //Catch input output exception
-                System.err.println("Caught IOException: " + e.getMessage());
-            }
-        } else if (transactionType.equalsIgnoreCase("withdraw")) {
-            Path path = Paths.get("AccountDetails.txt");
-            //Check whether files exists storing account information
-            if (Files.exists(path)) {
-                findUpdate();
-            } else {
-                System.out.println("File not Found");
-            }
-        } else if (transactionType.equalsIgnoreCase("deposit")) {
-            //Check whether files exists storing account information
-            Path path = Paths.get("AccountDetails.txt");
-            if (Files.exists(path)) {
-                findUpdate();
-            } else {
-                System.out.println("File not Found");
-            }
-        } else if (transactionType.equalsIgnoreCase("Paybill")) {
-            //Check whether files exists storing account information
-            Path path = Paths.get("AccountDetails.txt");
-            if (Files.exists(path)) {
-                payBill();
-            } else {
-                System.out.println("File not Found");
-            }
-        } else if (transactionType.equalsIgnoreCase("transfer")) {
-            //Check whether files exists storing account information
-            Path path = Paths.get("AccountDetails.txt");
-            if (Files.exists(path)) {
-                transferAmount();
-            } else {
-                System.out.println("File not Found");
-            }
-        } else if (transactionType.equalsIgnoreCase("showInfo")) {
-            Path path = Paths.get("AccountDetails.txt");
-            if (Files.exists(path)) {
-                findDisplay();
-            } else {
-                System.out.println("File not Found");
-            }
-        } else {
-            System.out.println("Invalid option");
-            return;
-        }*/
     }
     //To check the account existence ****NOT WORKING AS EXPECTED****
     public double checkIfAccountExists(long accountNum) {
@@ -197,7 +133,7 @@ public class Transactions {
         return 0.0;
     }
 
-    private void payBill() {
+    private void billPayment() {
         try {
             BufferedReader reader = new BufferedReader(new FileReader("AccountDetails.txt"));
             BufferedWriter writer = new BufferedWriter(new FileWriter("TempFile.txt", true));
@@ -250,7 +186,7 @@ public class Transactions {
         }
     }
 
-    public void transferAmount() {
+    public void transferToAccount() {
         System.out.println("\nEnter the Recipient's Account Number:");
         long transferAccountNo = scan.nextInt();
         storeTransferAccount(transferAccountNo);
@@ -267,8 +203,8 @@ public class Transactions {
                     //update both account balances
                     double transAccountBal = transferAccountBalance + amount;
                     double userAccountBal = temp_amount - amount;
-                    this.updateAccountInfo(accountNum, amount, "withdraw");
-                    this.updateAccountInfo(transferAccountNum, amount, "deposit");
+                    this.updateAccountBalance(accountNum, amount, "withdraw");
+                    this.updateAccountBalance(transferAccountNum, amount, "deposit");
                     System.out.println("*-------------------------------------------------------*");
                     System.out.println("|                  Successful operation                 |");
                     System.out.println("*-------------------------------------------------------*");
@@ -329,7 +265,7 @@ public class Transactions {
             e.printStackTrace();
         }
     }
-    private void updateAccountInfo(long accountNum, double amount, String type) {
+    private void updateAccountBalance(long accountNum, double amount, String type) {
         try {
             BufferedReader reader = new BufferedReader(new FileReader("AccountDetails.txt"));
             BufferedWriter writer = new BufferedWriter(new FileWriter("TempFile.txt", true));
@@ -383,7 +319,7 @@ public class Transactions {
         }
     }
 
-    private void findUpdate() {
+    private void findAccountUpdate() {
         try {
             BufferedReader reader = new BufferedReader(new FileReader("AccountDetails.txt"));
             BufferedWriter writer = new BufferedWriter(new FileWriter("TempFile.txt", true));

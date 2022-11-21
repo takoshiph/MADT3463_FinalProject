@@ -34,7 +34,7 @@ public class BankProgram {
     private void mainMenu() {
         String areYouNew = """
             
-            |-------------------------------------------------------|
+            *-------------------------------------------------------*
             | 1 : Create an Account.                                |
             | 2 : Existing User.                                    |
             | 3 : Exit                                              |
